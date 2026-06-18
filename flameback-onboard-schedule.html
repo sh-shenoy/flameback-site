@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Schedule a conversation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1714; --ink:#F2EDE3; --ink-soft:rgba(242,237,227,.64); --ink-mute:rgba(242,237,227,.42);
+    --line:rgba(242,237,227,.15); --panel:#221E1A; --accent:#FF6D0A; --btn-bg:#FF6D0A; --btn-ink:#1A1714;
+    --grain-blend:screen; --grain-op:.05;
+  }
+  :root.light{
+    --bg:#FCFAF6; --ink:#1A1714; --ink-soft:rgba(26,23,20,.66); --ink-mute:rgba(26,23,20,.46);
+    --line:rgba(26,23,20,.13); --panel:#F4EFE7; --accent:#FF6D0A; --btn-bg:#1A1714; --btn-ink:#FCFAF6;
+    --grain-blend:multiply; --grain-op:.03;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;font-variant-numeric:tabular-nums;min-height:100vh}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  section,nav,main{position:relative;z-index:2}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none}
+  .wm .p{color:var(--accent)}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.012em;color:var(--ink)}
+
+  /* Minimal nav */
+  nav{padding:18px 0;border-bottom:1px solid var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;font-style:italic}
+  .navr a:hover{color:var(--ink)}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic;padding:5px 13px;border-radius:999px}
+
+  /* Hero */
+  main{padding:clamp(40px,6vh,72px) 0 clamp(36px,5vh,56px)}
+  .hero{margin-bottom:clamp(28px,4vw,44px)}
+  .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .eyebrow .l{width:24px;height:1px;background:var(--accent)}
+  .eyebrow span{font-style:italic;font-size:13px;color:var(--ink-mute);letter-spacing:.04em}
+  h1{font-size:clamp(34px,5vw,54px);line-height:1.02;letter-spacing:-.018em;margin-bottom:16px;max-width:18ch}
+  h1 .acc{color:var(--accent);font-style:italic}
+  .lede{font-size:16px;line-height:1.6;color:var(--ink-soft);max-width:58ch}
+
+  /* Two-column body */
+  .body{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(28px,4vw,48px);align-items:flex-start}
+  @media(max-width:840px){.body{grid-template-columns:1fr;gap:32px}}
+
+  /* Calendar column */
+  .col-cal h3{font-size:20px;margin-bottom:6px}
+  .col-cal .desc{font-size:13.5px;color:var(--ink-mute);font-style:italic;margin-bottom:20px}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;padding:0 4px 14px;border-bottom:1px solid var(--line);margin-bottom:14px}
+  .cal-head .mo{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:var(--ink)}
+  .cal-head button{background:none;border:1px solid var(--line);color:var(--ink-soft);width:28px;height:28px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;justify-content:center}
+  .cal-head button:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .cal-head .navs{display:flex;gap:6px}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .cal-grid .dow{font-style:italic;font-size:10.5px;color:var(--ink-mute);letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:6px 0 10px}
+  .cal-grid .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink-soft);font-family:"Source Serif 4",serif;cursor:pointer;border:1px solid transparent;transition:border-color .15s,background .15s;border-radius:2px}
+  .cal-grid .day.muted{color:var(--ink-mute);opacity:.4;cursor:default}
+  .cal-grid .day.disabled{color:var(--ink-mute);opacity:.3;cursor:not-allowed;text-decoration:line-through}
+  .cal-grid .day.avail{color:var(--ink);position:relative}
+  .cal-grid .day.avail::after{content:"";position:absolute;bottom:5px;width:3px;height:3px;border-radius:50%;background:var(--accent)}
+  .cal-grid .day.avail:hover{border-color:var(--ink-mute);background:color-mix(in srgb,var(--ink) 4%,transparent)}
+  .cal-grid .day.sel{background:var(--accent);color:var(--btn-ink);font-weight:500}
+  .cal-grid .day.sel::after{background:var(--btn-ink)}
+  .cal-grid .day.today{font-weight:500}
+
+  .slot-head{display:flex;align-items:baseline;justify-content:space-between;margin:24px 0 12px}
+  .slot-head .h{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:17px;color:var(--ink)}
+  .slot-head .tz{font-size:11px;color:var(--ink-mute);font-style:italic}
+  .slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  @media(max-width:520px){.slots{grid-template-columns:repeat(3,1fr)}}
+  .slot{padding:11px 10px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:"Source Serif 4",serif;font-size:13.5px;cursor:pointer;text-align:center;transition:border-color .15s,color .15s,background .15s}
+  .slot:hover{border-color:var(--ink-mute);color:var(--ink)}
+  .slot.sel{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
+  .slot.unavail{opacity:.3;text-decoration:line-through;cursor:not-allowed}
+
+  /* RM card + form column */
+  .col-side{display:flex;flex-direction:column;gap:24px}
+  .rm-card{padding:24px;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 2%,transparent)}
+  .rm-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  .rm-av{width:52px;height:52px;border-radius:50%;background:color-mix(in srgb,var(--accent) 16%,transparent);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:var(--accent);flex-shrink:0}
+  .rm-meta .name{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--ink);line-height:1.1}
+  .rm-meta .role{font-size:11.5px;color:var(--ink-mute);font-style:italic;letter-spacing:.04em;margin-top:3px}
+  .rm-bio{font-size:13px;line-height:1.6;color:var(--ink-soft);font-style:italic}
+
+  /* Form */
+  .form{display:flex;flex-direction:column;gap:14px}
+  .form-row{display:flex;flex-direction:column;gap:6px}
+  .form-row label{font-size:11px;color:var(--ink-mute);font-style:italic;letter-spacing:.05em;text-transform:uppercase}
+  .form-row input,.form-row select,.form-row textarea{background:transparent;border:1px solid var(--line);padding:11px 13px;color:var(--ink);font-family:"Source Serif 4",serif;font-size:14.5px;transition:border-color .15s;font-variant-numeric:tabular-nums}
+  .form-row input:focus,.form-row select:focus,.form-row textarea:focus{outline:none;border-color:var(--accent)}
+  .form-row textarea{resize:vertical;min-height:78px;font-family:"Source Serif 4",serif}
+  .form-row .hint{font-size:11.5px;color:var(--ink-mute);font-style:italic;margin-top:2px}
+
+  /* Action */
+  .submit-row{margin-top:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .btn{background:var(--btn-bg);color:var(--btn-ink);border:none;font-family:"Source Serif 4",serif;font-size:15px;font-weight:500;padding:13px 26px;cursor:pointer;display:inline-flex;align-items:center;gap:11px;transition:gap .3s,opacity .3s}
+  .btn:hover{gap:15px;opacity:.92}
+  .submit-row .note{font-size:12px;color:var(--ink-mute);font-style:italic;line-height:1.5;max-width:34ch}
+
+  /* Bottom assurance */
+  .assurance{margin-top:clamp(36px,5vw,56px);padding-top:clamp(24px,3vw,32px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:680px){.assurance{grid-template-columns:1fr;gap:18px}}
+  .ass{display:flex;gap:14px;align-items:flex-start}
+  .ass .num{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent);font-size:18px;flex-shrink:0;line-height:1.4}
+  .ass .t{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:15px;color:var(--ink);margin-bottom:3px}
+  .ass .d{font-size:12.5px;color:var(--ink-soft);line-height:1.5;font-style:italic}
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="wrap navin">
+      <a class="wm" href="flameback-landing-v29.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a href="flameback-landing-v29.html">&larr; Back to site</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+
+      <div class="hero">
+        <div class="eyebrow"><span class="l"></span><span>Schedule a conversation</span></div>
+        <h1>Let&rsquo;s find time <span class="acc">to talk.</span></h1>
+        <p class="lede">A 30-minute conversation with someone from the client relations team. No slides, no pitch deck &mdash; we&rsquo;d like to hear what you&rsquo;re working on and decide together whether the firm is the right fit.</p>
+      </div>
+
+      <div class="body">
+        <!-- Calendar column -->
+        <div class="col-cal">
+          <h3>Pick a day.</h3>
+          <p class="desc">Bangalore time. We hold slots between 9 AM and 7 PM IST, Monday through Saturday.</p>
+
+          <div class="cal-head">
+            <span class="mo">June 2026</span>
+            <div class="navs">
+              <button aria-label="Previous month">&lsaquo;</button>
+              <button aria-label="Next month">&rsaquo;</button>
+            </div>
+          </div>
+
+          <div class="cal-grid">
+            <span class="dow">Mon</span><span class="dow">Tue</span><span class="dow">Wed</span><span class="dow">Thu</span><span class="dow">Fri</span><span class="dow">Sat</span><span class="dow">Sun</span>
+
+            <span class="day muted">26</span><span class="day muted">27</span><span class="day muted">28</span><span class="day muted">29</span><span class="day muted">30</span><span class="day muted">31</span><span class="day disabled">1</span>
+            <span class="day avail">2</span><span class="day avail">3</span><span class="day avail">4</span><span class="day avail">5</span><span class="day avail">6</span><span class="day avail">7</span><span class="day disabled">8</span>
+            <span class="day avail today">9</span><span class="day avail sel">10</span><span class="day avail">11</span><span class="day avail">12</span><span class="day avail">13</span><span class="day avail">14</span><span class="day disabled">15</span>
+            <span class="day avail">16</span><span class="day avail">17</span><span class="day avail">18</span><span class="day avail">19</span><span class="day avail">20</span><span class="day avail">21</span><span class="day disabled">22</span>
+            <span class="day avail">23</span><span class="day avail">24</span><span class="day avail">25</span><span class="day avail">26</span><span class="day avail">27</span><span class="day avail">28</span><span class="day disabled">29</span>
+            <span class="day avail">30</span><span class="day muted">1</span><span class="day muted">2</span><span class="day muted">3</span><span class="day muted">4</span><span class="day muted">5</span><span class="day muted">6</span>
+          </div>
+
+          <div class="slot-head">
+            <span class="h">Wednesday, 10 June</span>
+            <span class="tz">All times IST &middot; +05:30</span>
+          </div>
+          <div class="slots">
+            <button class="slot">9:00 AM</button>
+            <button class="slot">10:00 AM</button>
+            <button class="slot unavail" disabled>11:00 AM</button>
+            <button class="slot sel">12:00 PM</button>
+            <button class="slot">2:00 PM</button>
+            <button class="slot">3:00 PM</button>
+            <button class="slot unavail" disabled>4:00 PM</button>
+            <button class="slot">5:00 PM</button>
+            <button class="slot">6:00 PM</button>
+          </div>
+        </div>
+
+        <!-- Side column: RM + form -->
+        <div class="col-side">
+          <div class="rm-card">
+            <div class="rm-top">
+              <div class="rm-av">AR</div>
+              <div class="rm-meta">
+                <div class="name">Ashrith Rao</div>
+                <div class="role">Fund Manager &middot; client relations</div>
+              </div>
+            </div>
+            <p class="rm-bio">Ashrith looks after early conversations with new clients. He&rsquo;ll listen first, ask questions, and only suggest a path forward if one fits.</p>
+          </div>
+
+          <div class="form">
+            <div class="form-row">
+              <label for="f-name">Your name</label>
+              <input type="text" id="f-name" placeholder="As you&rsquo;d like us to address you"/>
+            </div>
+            <div class="form-row">
+              <label for="f-email">Email</label>
+              <input type="email" id="f-email" placeholder="you@example.com"/>
+            </div>
+            <div class="form-row">
+              <label for="f-phone">Phone</label>
+              <input type="tel" id="f-phone" placeholder="+91 98765 43210"/>
+            </div>
+            <div class="form-row">
+              <label for="f-type">Who you are</label>
+              <select id="f-type">
+                <option>Resident individual</option>
+                <option>NRI</option>
+                <option>HUF</option>
+                <option>Corporate / Trust</option>
+                <option>Family office</option>
+                <option>Adviser / Distributor</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="f-range">Investment in mind</label>
+              <select id="f-range">
+                <option>Still figuring it out</option>
+                <option>Under &#8377;50 L</option>
+                <option>&#8377;50 L &ndash; 1 Cr</option>
+                <option>&#8377;1 Cr &ndash; 5 Cr</option>
+                <option>&#8377;5 Cr &ndash; 25 Cr</option>
+                <option>&#8377;25 Cr &amp; above</option>
+              </select>
+              <span class="hint">A rough range helps us prepare. No commitment.</span>
+            </div>
+            <div class="form-row">
+              <label for="f-note">What&rsquo;s on your mind <span style="text-transform:none;font-style:italic;color:var(--ink-mute)">&mdash; optional</span></label>
+              <textarea id="f-note" placeholder="A few lines about what you&rsquo;d like to discuss. Helps us come prepared."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <a class="btn" href="flameback-onboard-confirmed.html">Confirm &mdash; Wed, 10 June, 12:00 PM &rarr;</a>
+        <span class="note">By scheduling, you agree to a one-off conversation. No marketing emails, no follow-ups beyond what&rsquo;s necessary.</span>
+      </div>
+
+      <div class="assurance">
+        <div class="ass"><span class="num">i</span><div><div class="t">No script.</div><div class="d">We don&rsquo;t read from one. Ashrith will follow whatever direction the conversation takes.</div></div></div>
+        <div class="ass"><span class="num">ii</span><div><div class="t">No pressure.</div><div class="d">Most first conversations end with &lsquo;let&rsquo;s think about it&rsquo;. That&rsquo;s a fine outcome.</div></div></div>
+        <div class="ass"><span class="num">iii</span><div><div class="t">No NDA needed.</div><div class="d">Anything you share is held in confidence by default. Nothing leaves the firm.</div></div></div>
+      </div>
+
+    </div>
+  </main>
+
+<script>
+  var root=document.documentElement, tg=document.getElementById('toggle');
+  tg.addEventListener('click',function(){root.classList.toggle('light');tg.textContent=root.classList.contains('light')?'Dark':'Light';});
+
+  // Day selection
+  document.querySelectorAll('.cal-grid .day.avail').forEach(function(d){
+    d.addEventListener('click',function(){
+      document.querySelectorAll('.cal-grid .day').forEach(function(x){x.classList.remove('sel')});
+      d.classList.add('sel');
+    });
+  });
+  // Slot selection
+  document.querySelectorAll('.slot').forEach(function(s){
+    if(s.disabled) return;
+    s.addEventListener('click',function(){
+      document.querySelectorAll('.slot').forEach(function(x){x.classList.remove('sel')});
+      s.classList.add('sel');
+    });
+  });
+</script>
+</body>
+</html>
