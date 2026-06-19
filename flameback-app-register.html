@@ -199,15 +199,15 @@
   var nv=document.getElementById('nav');
   window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
 
-  var name=document.getElementById('name'),email=document.getElementById('email'),city=document.getElementById('city');
+  var nameEl=document.getElementById('name'),email=document.getElementById('email'),city=document.getElementById('city');
   var createBtn=document.getElementById('createBtn');
 
   function emailOk(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
   function validate(){
-    var ok=name.value.trim()&&emailOk(email.value.trim())&&city.value.trim();
+    var ok=nameEl.value.trim()&&emailOk(email.value.trim())&&city.value.trim();
     createBtn.disabled=!ok;
   }
-  [name,email,city].forEach(function(el){el.addEventListener('input',validate);});
+  [nameEl,email,city].forEach(function(el){el.addEventListener('input',validate);});
 
   // city autocomplete
   var cities=["Bengaluru","Mumbai","Delhi","Hyderabad","Chennai","Kolkata","Pune","Ahmedabad","Jaipur","Surat","Lucknow","Chandigarh","Indore","Kochi","Coimbatore","Gurugram","Noida","Nagpur"];
