@@ -11,32 +11,50 @@
   :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025)}
   *{margin:0;padding:0;box-sizing:border-box}
   html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column}
   body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
   h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
   .mono{font-family:"JetBrains Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
 
-  .app{position:relative;z-index:2;max-width:440px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;border-left:1px solid var(--line);border-right:1px solid var(--line)}
-  @media(max-width:480px){.app{border-left:none;border-right:none}}
-
-  .top{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:17px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  /* ===== site chrome (matches marketing pages) ===== */
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+  nav.scrolled{border-color:var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:18px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
   .wm .p{color:var(--accent)}
-  .top .r{display:flex;align-items:center;gap:12px}
-  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12px;font-style:italic;padding:4px 12px;border-radius:999px}
-  .back{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
-  .back:hover{color:var(--accent)}
+  .navr{display:flex;align-items:center;gap:22px}
+  .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
+  .navr a:hover{color:var(--ink)}
+  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:8px 16px;font-weight:500}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
+  @media(max-width:1020px){.navr .navlink{display:none}}
 
-  .body{flex:1;padding:28px 22px 40px}
+  footer{padding:60px 0 32px;position:relative;z-index:2;border-top:1px solid var(--line);margin-top:auto}
+  .footin{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+  .footcols{display:flex;gap:clamp(34px,5vw,64px);flex-wrap:wrap}
+  .footcol h4{font-style:italic;font-weight:400;font-size:12.5px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .footcol a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:9px}
+  .footcol a:hover{color:var(--accent)}
+  .disc{padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .disc span{font-size:11.5px;color:var(--ink-mute);line-height:1.6}
+  .disc .legal{max-width:72ch;font-style:italic}
+  .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
+
+  /* ===== screen content — wider centred column for rich charts ===== */
+  main{position:relative;z-index:2;flex:1}
+  .screen{max-width:760px;margin:0 auto;padding:clamp(44px,7vh,84px) 0 clamp(56px,9vh,96px)}
+  .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-style:italic;color:var(--ink-mute);text-decoration:none;margin-bottom:30px;transition:color .3s}
+  .back-link:hover{color:var(--ink-soft)}
 
   .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:14px}
   .eyebrow .l{width:20px;height:1px;background:var(--accent)}
-  h1.title{font-size:clamp(30px,8vw,40px);margin-bottom:8px}
-  .lede{font-size:14px;font-style:italic;color:var(--ink-soft);margin-bottom:28px;line-height:1.55}
+  h1.title{font-size:clamp(38px,5.4vw,60px);margin-bottom:8px}
+  .lede{font-size:16px;font-style:italic;color:var(--ink-soft);margin-bottom:28px;line-height:1.55}
 
   /* risk spectrum slider */
-  .spectrum{margin-bottom:26px}
+  .spectrum{margin-bottom:26px;max-width:560px}
   .spectrum .lab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:18px}
   .specbar{position:relative;height:8px;border-radius:999px;background:linear-gradient(90deg,#3FA34D 0%,#C9A227 50%,#C0392B 100%);margin:0 8px 0}
   :root.light .specbar{background:linear-gradient(90deg,#2E7D32 0%,#B7791F 50%,#A93226 100%)}
@@ -49,9 +67,10 @@
   .anchors{display:flex;justify-content:space-between;margin-top:12px;font-size:11px;font-style:italic;color:var(--ink-mute)}
 
   /* cards */
-  .bandhead{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;color:var(--ink);margin:6px 0 16px}
+  .bandhead{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--ink);margin:6px 0 16px}
   .bandhead b{color:var(--accent);font-style:normal;font-weight:500}
-  .cards{display:flex;flex-direction:column;gap:16px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:640px){.cards{grid-template-columns:1fr}}
   .scard{border:1px solid var(--line);background:var(--card);padding:18px}
   .scard .typetag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:999px;padding:3px 9px;display:inline-block;margin-bottom:10px}
   .scard .nm{font-size:23px;line-height:1.05;margin-bottom:12px}
@@ -81,53 +100,83 @@
 </style>
 </head>
 <body>
-<div class="app">
 
-  <header class="top">
-    <a href="flameback-lobby.html" class="wm">flameback<span class="p">.</span></a>
-    <div class="r">
-      <button class="toggle" id="toggle">light</button>
-      <a href="flameback-app-quick-profiler.html" class="back">&larr; back</a>
+  <nav id="nav">
+    <div class="wrap navin">
+      <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+      <div class="navr">
+        <a class="navlink" href="flameback-who-we-are.html">Who we are</a>
+        <a class="navlink" href="flameback-what-we-do.html">What we do</a>
+        <a class="navlink" href="flameback-our-work.html">Our work</a>
+        <a class="navlink" href="flameback-insights.html">Insights</a>
+        <button class="toggle" id="toggle">Light</button>
+      </div>
     </div>
-  </header>
+  </nav>
 
-  <main class="body">
-    <span class="eyebrow"><span class="l"></span>Browse · no commitment</span>
-    <h1 class="title">The <em>catalogue.</em></h1>
-    <p class="lede">A look at the strategies — slide across the bands, see what fits. Invest in any of them once you've looked.</p>
+  <main>
+    <div class="wrap">
+      <div class="screen">
+        <a href="flameback-app-quick-profiler.html" class="back-link">&larr; Back</a>
 
-    <!-- spectrum -->
-    <div class="spectrum">
-      <div class="lab">Risk spectrum</div>
-      <div class="specbar">
-        <div class="stops" id="stops">
-          <div class="stop on" data-b="0"></div>
-          <div class="stop" data-b="1"></div>
-          <div class="stop" data-b="2"></div>
-          <div class="stop" data-b="3"></div>
+        <span class="eyebrow"><span class="l"></span>Browse · no commitment</span>
+        <h1 class="title">The <em>catalogue.</em></h1>
+        <p class="lede">A look at the strategies — slide across the bands, see what fits. Invest in any of them once you've looked.</p>
+
+        <!-- spectrum -->
+        <div class="spectrum">
+          <div class="lab">Risk spectrum</div>
+          <div class="specbar">
+            <div class="stops" id="stops">
+              <div class="stop on" data-b="0"></div>
+              <div class="stop" data-b="1"></div>
+              <div class="stop" data-b="2"></div>
+              <div class="stop" data-b="3"></div>
+            </div>
+          </div>
+          <div class="stoplabels" id="stoplabels">
+            <span class="on" data-b="0">Conservative</span>
+            <span data-b="1">Moderate</span>
+            <span data-b="2">Aggressive</span>
+            <span data-b="3">Very<br>aggressive</span>
+          </div>
+          <div class="anchors"><span>Less risk → stable</span><span>More risk → higher</span></div>
+        </div>
+
+        <div class="bandhead">Two strategies for the <b id="bandName">Conservative</b> band</div>
+
+        <div class="cards" id="cards"></div>
+
+        <a href="flameback-app-path.html" class="backlink">Back to start</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footin">
+        <a class="wm" href="index.html">flameback<span class="p">.</span></a>
+        <div class="footcols">
+          <div class="footcol"><h4>The firm</h4><a href="flameback-who-we-are.html">Who we are</a><a href="flameback-what-we-do.html">What we do</a><a href="flameback-our-work.html">Our work</a><a href="flameback-clients.html">Clients</a></div>
+          <div class="footcol"><h4>Open</h4><a href="flameback-insights.html">Insights</a><a href="flameback-tools.html">Tools</a><a href="flameback-offbook.html">Off-book</a></div>
+          <div class="footcol"><h4>Contact</h4><a href="flameback-app-profile-intro.html">Start investing</a><a href="#">hello@flameback.in</a><a href="#">Bangalore, India</a></div>
         </div>
       </div>
-      <div class="stoplabels" id="stoplabels">
-        <span class="on" data-b="0">Conservative</span>
-        <span data-b="1">Moderate</span>
-        <span data-b="2">Aggressive</span>
-        <span data-b="3">Very<br>aggressive</span>
+      <div class="disc">
+        <span>&copy; 2026 Flameback Capital Pvt Ltd</span>
+        <span class="legal">SEBI registered &middot; SEC filed for US strategy. Investments are subject to market risk. Past performance is not indicative of future results.</span>
+        <span class="reg-links"><a href="flameback-pms-disclosure.html">PMS disclosure</a><a href="flameback-advisory-disclosure.html">IA disclosure</a></span>
       </div>
-      <div class="anchors"><span>Less risk → stable</span><span>More risk → higher</span></div>
     </div>
-
-    <div class="bandhead">Two strategies for the <b id="bandName">Conservative</b> band</div>
-
-    <div class="cards" id="cards"></div>
-
-    <a href="flameback-app-path.html" class="backlink">Back to start</a>
-  </main>
-</div>
+  </footer>
 
 <script>
   // light/dark toggle
   var t=document.getElementById('toggle');
-  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'dark':'light';};
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
+  // nav border on scroll
+  var nv=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
 
   var BANDS=['Conservative','Moderate','Aggressive','Very aggressive'];
 
