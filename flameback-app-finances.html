@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>flameback. — Who's investing</title>
+<title>flameback. — Your finances</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -15,10 +15,8 @@
   body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
   h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
-  .mono{font-family:"JetBrains Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
   .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,44px)}
 
-  /* ===== site chrome (matches marketing pages) ===== */
   nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
   nav.scrolled{border-color:var(--line)}
   .navin{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
@@ -27,7 +25,6 @@
   .navr{display:flex;align-items:center;gap:22px}
   .navr a{color:var(--ink-soft);text-decoration:none;font-size:14px;transition:color .3s}
   .navr a:hover{color:var(--ink)}
-  .navr a.cta{background:var(--btn-bg);color:var(--btn-ink);padding:8px 16px;font-weight:500}
   .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12.5px;font-style:italic;padding:5px 13px;border-radius:999px}
   @media(max-width:1020px){.navr .navlink{display:none}}
 
@@ -42,13 +39,11 @@
   .disc .legal{max-width:72ch;font-style:italic}
   .disc .reg-links a{color:var(--ink-mute);text-decoration:none;font-size:11.5px;font-style:italic;margin-left:14px}
 
-  /* ===== screen content — centred column on the wide page ===== */
   main{position:relative;z-index:2;flex:1}
   .screen{max-width:600px;margin:0 auto;padding:clamp(44px,7vh,84px) 0 clamp(56px,9vh,96px)}
   .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-style:italic;color:var(--ink-mute);text-decoration:none;margin-bottom:30px;transition:color .3s}
   .back-link:hover{color:var(--ink-soft)}
 
-  /* progress indicator */
   .progress{margin-bottom:34px}
   .progress .lab{display:flex;align-items:center;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
   .progress .lab b{color:var(--accent);font-weight:500}
@@ -57,31 +52,33 @@
 
   .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px}
   .eyebrow .l{width:20px;height:1px;background:var(--accent)}
-  h1.q{font-size:clamp(38px,5.4vw,60px);line-height:1.02;margin-bottom:18px}
-  .lede{font-size:16px;font-style:italic;color:var(--ink-soft);line-height:1.6;margin-bottom:28px}
+  h1.q{font-size:clamp(38px,5.4vw,56px);line-height:1.04;margin-bottom:14px}
+  .lede{font-size:16px;font-style:italic;color:var(--ink-soft);line-height:1.6;margin-bottom:32px;max-width:460px}
 
-  .chips{display:flex;flex-direction:column;gap:11px;margin-bottom:8px}
-  .chip{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:"Source Serif 4",serif;font-size:16px;padding:16px 18px;cursor:pointer;transition:border-color .25s,background .25s,color .25s}
-  .chip .tick{width:18px;height:18px;border-radius:50%;border:1px solid var(--line);flex:none;display:grid;place-items:center;transition:border-color .25s,background .25s}
-  .chip .tick::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);transform:scale(0);transition:transform .2s}
-  .chip:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
-  .chip.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,transparent)}
-  .chip.sel .tick{border-color:var(--accent)}
-  .chip.sel .tick::after{transform:scale(1)}
-  .chip .txt{display:flex;flex-direction:column}
-  .chip .sub{font-size:12.5px;color:var(--ink-mute);font-style:italic;margin-top:3px}
+  .field{margin-bottom:22px}
+  label.fl{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:9px}
+  .why{font-size:12px;font-style:italic;color:var(--ink-mute);margin-top:7px;line-height:1.5}
+  .inwrap{display:flex;align-items:center;border:1px solid var(--line);background:var(--card);transition:border-color .3s}
+  .inwrap:focus-within{border-color:var(--accent)}
+  .inwrap .cur{padding:0 4px 0 14px;color:var(--ink-soft);font-size:16px}
+  .inwrap input,.field>input{flex:1;width:100%;background:none;border:none;outline:none;color:var(--ink);font-family:"Source Serif 4",serif;font-size:16px;padding:14px;font-variant-numeric:tabular-nums}
+  .field>input{border:1px solid var(--line);background:var(--card)}
+  .field>input:focus{border-color:var(--accent);outline:none}
+  .inwrap .suf{padding:0 14px;color:var(--ink-mute);font-size:13px;font-style:italic}
 
-  .waitlist{border:1px solid var(--line);border-left:2px solid var(--accent);background:var(--card);padding:22px 20px;margin-top:18px;display:none}
-  .waitlist.show{display:block;animation:fade .4s ease}
-  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-  .waitlist h3{font-size:25px;margin-bottom:10px}
-  .waitlist p{font-size:14px;line-height:1.65;color:var(--ink-soft)}
-  .waitlist p b{color:var(--ink);font-weight:500}
+  .chips{display:flex;flex-wrap:wrap;gap:9px}
+  .chip{font-family:"Source Serif 4",serif;font-size:15px;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);padding:9px 18px;border-radius:999px;cursor:pointer;transition:all .2s;min-width:54px;text-align:center}
+  .chip:hover{border-color:var(--ink-soft)}
+  .chip.on{background:var(--accent);color:var(--btn-ink);border-color:var(--accent)}
 
-  .cta{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:var(--btn-bg);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:15.5px;font-weight:500;padding:15px 30px;text-decoration:none;border:none;cursor:pointer;transition:gap .35s,opacity .3s;margin-top:36px}
-  .cta:hover{gap:15px;opacity:.93}
+  .calc{border:1px solid var(--line);border-left:2px solid var(--accent);background:var(--card);padding:16px 18px;margin:6px 0 4px;display:flex;align-items:baseline;justify-content:space-between;gap:14px}
+  .calc .k{font-size:13.5px;color:var(--ink-soft);font-style:italic}
+  .calc .v{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:30px;color:var(--accent);line-height:1}
+  .calc .v.muted{color:var(--ink-mute)}
+
+  .cta{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:var(--btn-bg);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:15.5px;font-weight:500;padding:15px 30px;text-decoration:none;border:none;cursor:pointer;transition:gap .35s,opacity .3s;margin-top:30px}
+  .cta:hover:not(:disabled){gap:15px;opacity:.93}
   .cta:disabled{opacity:.32;cursor:not-allowed}
-  .cta:disabled:hover{gap:11px;opacity:.32}
 </style>
 </head>
 <body>
@@ -105,32 +102,63 @@
         <a href="flameback-app-profile-intro.html" class="back-link">&larr; Back</a>
 
         <div class="progress">
-          <div class="lab"><span>Your finances</span><span><b>Step 1</b> of 3</span></div>
+          <div class="lab"><span>Your finances · S-B01</span><span><b>Step 1</b> of 3</span></div>
           <div class="track"><div class="fill" style="width:10%"></div></div>
         </div>
 
-        <span class="eyebrow"><span class="l"></span>Investor type</span>
-        <h1 class="q">Who's <em>investing?</em></h1>
-        <p class="lede">This decides how your account is set up — and which onboarding we run for you.</p>
+        <span class="eyebrow"><span class="l"></span>Step 1 — Your finances</span>
+        <h1 class="q">Where things <em>stand.</em></h1>
+        <p class="lede">Seven quick numbers. They set your baseline — your cushion, what you can put to work, and the room you've got to take risk.</p>
 
-        <div class="chips" id="chips">
-          <button class="chip" data-route="individual">
-            <span class="txt">Individual<span class="sub">Investing in your own name</span></span>
-            <span class="tick"></span>
-          </button>
-          <button class="chip" data-route="waitlist">
-            <span class="txt">HUF<span class="sub">Hindu Undivided Family</span></span>
-            <span class="tick"></span>
-          </button>
-          <button class="chip" data-route="waitlist">
-            <span class="txt">Financial Intermediary<span class="sub">Investing on behalf of clients</span></span>
-            <span class="tick"></span>
-          </button>
+        <div class="field">
+          <label class="fl">Your age</label>
+          <input id="f1" type="number" inputmode="numeric" min="18" placeholder="e.g. 34">
+          <div class="why">Must be 18 or over.</div>
         </div>
 
-        <div class="waitlist" id="waitlist">
-          <h3>You're <em>on the list.</em></h3>
-          <p>HUF and intermediary accounts are nearly here — we'll write to you at <b>shashank@flamebackcapital.com</b> the day they go live.</p>
+        <div class="field">
+          <label class="fl">Annual income — after tax</label>
+          <div class="inwrap"><span class="cur">₹</span><input class="cur-inp" id="f2" inputmode="numeric" placeholder="12,00,000"></div>
+        </div>
+
+        <div class="field">
+          <label class="fl">Monthly expenses</label>
+          <div class="inwrap"><span class="cur">₹</span><input class="cur-inp" id="f3" inputmode="numeric" placeholder="55,000"></div>
+          <div class="why">Household spend, excluding loan EMIs — it tells us how many months of life your income covers.</div>
+        </div>
+
+        <div class="field">
+          <label class="fl">Monthly EMIs</label>
+          <div class="inwrap"><span class="cur">₹</span><input class="cur-inp" id="f4" inputmode="numeric" placeholder="0"></div>
+          <div class="why">All loan repayments combined. Enter 0 if you have none.</div>
+        </div>
+
+        <div class="field">
+          <label class="fl">Total assets</label>
+          <div class="inwrap"><span class="cur">₹</span><input class="cur-inp" id="f5" inputmode="numeric" placeholder="45,00,000"></div>
+          <div class="why">Everything combined — savings, investments, property.</div>
+        </div>
+
+        <div class="field">
+          <label class="fl">Total liabilities</label>
+          <div class="inwrap"><span class="cur">₹</span><input class="cur-inp" id="f6" inputmode="numeric" placeholder="8,00,000"></div>
+          <div class="why">Outstanding loans across everything.</div>
+        </div>
+
+        <div class="field">
+          <label class="fl">People financially dependent on you</label>
+          <div class="chips" id="dep">
+            <div class="chip" data-v="0">0</div>
+            <div class="chip" data-v="1">1</div>
+            <div class="chip" data-v="2">2</div>
+            <div class="chip" data-v="3">3</div>
+            <div class="chip" data-v="4">4+</div>
+          </div>
+        </div>
+
+        <div class="calc">
+          <span class="k">Estimated savings rate</span>
+          <span class="v muted" id="savings">—</span>
         </div>
 
         <div><button class="cta" id="cta" disabled>Continue &rarr;</button></div>
@@ -157,38 +185,50 @@
   </footer>
 
 <script>
-  // light/dark toggle
   var t=document.getElementById('toggle');
   t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'Dark':'Light';};
-  // nav border on scroll
   var nv=document.getElementById('nav');
   window.addEventListener('scroll',function(){nv.classList.toggle('scrolled',window.scrollY>8);});
 
-  var chips=document.querySelectorAll('#chips .chip');
-  var cta=document.getElementById('cta');
-  var waitlist=document.getElementById('waitlist');
-  var route=null;
-  chips.forEach(function(c){
+  // live Indian-format currency inputs
+  function fmt(n){ if(n==='')return ''; return Number(n).toLocaleString('en-IN'); }
+  function digits(el){ return el.value.replace(/[^0-9]/g,''); }
+  document.querySelectorAll('.cur-inp').forEach(function(el){
+    el.addEventListener('input',function(){
+      var d=digits(el); el.value=d?fmt(d):''; recalc(); validate();
+    });
+  });
+
+  var f1=document.getElementById('f1');
+  f1.addEventListener('input',function(){validate();});
+
+  // dependants chips (single-select)
+  var dep=null;
+  document.querySelectorAll('#dep .chip').forEach(function(c){
     c.onclick=function(){
-      chips.forEach(function(x){x.classList.remove('sel');});
-      c.classList.add('sel');
-      route=c.getAttribute('data-route');
-      cta.disabled=false;
-      if(route==='waitlist'){
-        waitlist.classList.add('show');
-        cta.textContent='That’s us done — for now →';
-        cta.disabled=true; // onboarding ends here for non-individual users
-      }else{
-        waitlist.classList.remove('show');
-        cta.disabled=false;
-        cta.textContent='Continue →';
-      }
+      document.querySelectorAll('#dep .chip').forEach(function(x){x.classList.remove('on');});
+      c.classList.add('on'); dep=c.getAttribute('data-v'); validate();
     };
   });
-  cta.onclick=function(){
-    if(cta.disabled)return;
-    if(route==='individual'){location.href='flameback-app-income-streams.html';}
-  };
+
+  function val(id){ return parseInt(digits(document.getElementById(id))||'0',10); }
+  function recalc(){
+    var income=val('f2'), exp=val('f3'), emi=val('f4');
+    var sv=document.getElementById('savings');
+    if(income>0){
+      var rate=(income-(exp*12)-(emi*12))/income*100;
+      sv.textContent=Math.round(rate)+'%';
+      sv.classList.toggle('muted', false);
+    } else { sv.textContent='—'; sv.classList.add('muted'); }
+  }
+
+  var cta=document.getElementById('cta');
+  function validate(){
+    var age=parseInt(f1.value||'0',10);
+    var ok = age>=18 && val('f2')>0 && val('f3')>0 && f4.value!=='' && val('f5')>0 && document.getElementById('f6').value!=='' && dep!==null;
+    cta.disabled=!ok;
+  }
+  cta.onclick=function(){ if(!cta.disabled) location.href='flameback-app-income-streams.html'; };
 </script>
 </body>
 </html>
