@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Income security</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055;--card:rgba(242,237,227,.03)}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .mono{font-family:"JetBrains Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+
+  .app{position:relative;z-index:2;max-width:440px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  @media(max-width:480px){.app{border-left:none;border-right:none}}
+
+  .top{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:17px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .top .r{display:flex;align-items:center;gap:12px}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12px;font-style:italic;padding:4px 12px;border-radius:999px}
+  .back{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-family:"Cormorant Garamond",serif;font-size:24px;line-height:1;text-decoration:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--line)}
+
+  .body{flex:1;padding:30px 22px 40px;display:flex;flex-direction:column}
+
+  .progress{padding:14px 22px 0}
+  .progress .lab{display:flex;align-items:center;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
+  .progress .lab b{color:var(--accent);font-weight:500}
+  .track{height:3px;border-radius:999px;background:var(--line);overflow:hidden}
+  .track .fill{height:100%;background:var(--accent);border-radius:999px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px}
+  .eyebrow .l{width:20px;height:1px;background:var(--accent)}
+  h1.q{font-size:clamp(32px,8.4vw,42px);line-height:1.06;margin-bottom:14px}
+  .lede{font-size:14.5px;font-style:italic;color:var(--ink-soft);line-height:1.6;margin-bottom:26px}
+
+  .chips{display:flex;flex-direction:column;gap:11px;margin-bottom:8px}
+  .chip{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:"Source Serif 4",serif;font-size:16px;padding:16px 18px;cursor:pointer;transition:border-color .25s,background .25s,color .25s}
+  .chip .tick{width:18px;height:18px;border-radius:50%;border:1px solid var(--line);flex:none;display:grid;place-items:center;transition:border-color .25s}
+  .chip .tick::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);transform:scale(0);transition:transform .2s}
+  .chip:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+  .chip.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,transparent)}
+  .chip.sel .tick{border-color:var(--accent)}
+  .chip.sel .tick::after{transform:scale(1)}
+
+  .why{margin-top:22px;border:1px solid var(--line);border-left:2px solid var(--accent);background:var(--card);padding:16px 18px}
+  .why .h{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
+  .why p{font-size:13px;line-height:1.6;color:var(--ink-soft)}
+
+  .spacer{flex:1;min-height:24px}
+  .cta{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;background:var(--btn-bg);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:15.5px;font-weight:500;padding:16px;text-decoration:none;border:none;cursor:pointer;transition:gap .35s,opacity .3s}
+  .cta:hover{gap:15px;opacity:.93}
+  .cta:disabled{opacity:.32;cursor:not-allowed}
+  .cta:disabled:hover{gap:11px;opacity:.32}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <a href="flameback-app-income-streams.html" class="back" id="back" title="Back">&larr;</a>
+    <a href="index.html" class="wm">flameback<span class="p">.</span></a>
+    <div class="r">
+      <button class="toggle" id="toggle">light</button>
+    </div>
+  </header>
+
+  <div class="progress">
+    <div class="lab"><span>Your finances</span><span><b>Step 1</b> of 3</span></div>
+    <div class="track"><div class="fill" style="width:34%"></div></div>
+  </div>
+
+  <main class="body">
+    <span class="eyebrow"><span class="l"></span>Income security</span>
+    <h1 class="q">How secure is your <em>primary income?</em></h1>
+    <p class="lede">Be honest with yourself — there's no right answer here.</p>
+
+    <div class="chips" id="chips">
+      <button class="chip">Very secure<span class="tick"></span></button>
+      <button class="chip">Secure<span class="tick"></span></button>
+      <button class="chip">Uncertain<span class="tick"></span></button>
+      <button class="chip">At risk<span class="tick"></span></button>
+    </div>
+
+    <div class="why">
+      <div class="h">Why we ask</div>
+      <p>Income stability changes your safety net. Secure income lets us hold longer-horizon positions; uncertain income means a larger cash buffer.</p>
+    </div>
+
+    <div class="spacer"></div>
+    <button class="cta" id="cta" disabled>Continue &rarr;</button>
+  </main>
+</div>
+
+<script>
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'dark':'light';};
+
+  document.getElementById('back').onclick=function(e){e.preventDefault();history.length>1?history.back():location.href='flameback-app-income-streams.html';};
+
+  var chips=document.querySelectorAll('#chips .chip');
+  var cta=document.getElementById('cta');
+  chips.forEach(function(c){
+    c.onclick=function(){
+      chips.forEach(function(x){x.classList.remove('sel');});
+      c.classList.add('sel');
+      cta.disabled=false;
+    };
+  });
+  cta.onclick=function(){if(!cta.disabled)location.href='flameback-app-income-outlook.html';};
+</script>
+</body>
+</html>

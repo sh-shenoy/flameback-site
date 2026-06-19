@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>flameback. — Fee plan &amp; payment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1A1714;--ink:#F2EDE3;--ink-soft:rgba(242,237,227,.66);--ink-mute:rgba(242,237,227,.44);--line:rgba(242,237,227,.16);--accent:#FF6D0A;--btn-bg:#FF6D0A;--btn-ink:#1A1714;--grain-blend:screen;--grain-op:.055;--card:rgba(242,237,227,.03)}
+  :root.light{--bg:#FCFAF6;--ink:#1A1714;--ink-soft:rgba(26,23,20,.68);--ink-mute:rgba(26,23,20,.46);--line:rgba(26,23,20,.14);--accent:#B23E08;--btn-bg:#1A1714;--btn-ink:#FCFAF6;--grain-blend:multiply;--grain-op:.035;--card:rgba(26,23,20,.025)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",serif;transition:background .5s,color .5s;line-height:1.55;font-variant-numeric:tabular-nums;min-height:100vh}
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:var(--grain-blend);opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.014em;line-height:1.04}
+  h1 em,h2 em,h3 em{color:var(--accent);font-style:italic;font-weight:500}
+  .mono{font-family:"JetBrains Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+
+  .app{position:relative;z-index:2;max-width:440px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  @media(max-width:480px){.app{border-left:none;border-right:none}}
+
+  .top{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .wm{font-family:"Source Serif 4",serif;font-weight:600;font-size:17px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+  .wm .p{color:var(--accent)}
+  .top .r{display:flex;align-items:center;gap:12px}
+  .toggle{background:none;border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;font-family:"Source Serif 4",serif;font-size:12px;font-style:italic;padding:4px 12px;border-radius:999px}
+  .back{display:inline-flex;align-items:center;gap:8px;color:var(--ink-soft);text-decoration:none;font-family:"Source Serif 4",serif;font-size:13px;font-style:italic}
+  .back .a{font-size:16px;line-height:1}
+  .back:hover{color:var(--ink)}
+
+  .body{flex:1;padding:26px 22px 40px}
+
+  .prog{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+  .prog .dot{flex:1;height:3px;border-radius:999px;background:var(--line)}
+  .prog .dot.on{background:var(--accent)}
+  .prog .dot.done{background:color-mix(in srgb,var(--accent) 55%,transparent)}
+  .step-lab{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:22px;display:block}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.09em;text-transform:uppercase;margin-bottom:14px}
+  .eyebrow .l{width:20px;height:1px;background:var(--accent)}
+  h1.head{font-size:clamp(32px,8.4vw,42px);line-height:1.03;margin-bottom:10px}
+  .lede{font-size:15px;font-style:italic;color:var(--ink-soft);margin-bottom:24px;line-height:1.6}
+
+  /* fee blocks */
+  .fee{border:1px solid var(--line);background:var(--card);padding:18px 18px;margin-bottom:14px}
+  .fee .ttl{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .fee .ttl span:first-child{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .fee .amt{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:28px;color:var(--ink)}
+  .fee .amt em{color:var(--accent);font-style:italic}
+  .fee .cap{font-size:12.5px;line-height:1.6;color:var(--ink-soft)}
+
+  .cad-lab{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin:22px 0 12px;display:block}
+  .chips{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:8px}
+  .chip{border:1px solid var(--line);background:var(--card);padding:13px 8px;text-align:center;cursor:pointer;transition:.2s;border-radius:3px}
+  .chip:hover{border-color:var(--ink-soft)}
+  .chip.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--bg))}
+  .chip .c-nm{font-family:"Source Serif 4",serif;font-size:14px;color:var(--ink);margin-bottom:4px}
+  .chip .c-amt{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.02em}
+  .chip.on .c-amt{color:var(--accent)}
+  .cad-note{font-size:12px;font-style:italic;color:var(--ink-mute);margin-bottom:26px}
+
+  .cta{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;background:var(--btn-bg);color:var(--btn-ink);font-family:"Source Serif 4",serif;font-size:15.5px;font-weight:500;padding:16px;text-decoration:none;border:none;cursor:pointer;transition:gap .35s,opacity .3s}
+  .cta:hover{gap:15px;opacity:.93}
+  .cta:disabled{opacity:.4;cursor:not-allowed}
+  .cta:disabled:hover{gap:11px;opacity:.4}
+  .sim-lab{font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;margin-top:18px;text-align:center;display:block;opacity:.7}
+
+  /* payment sheet */
+  .scrim{position:fixed;inset:0;z-index:100;background:rgba(10,8,6,.6);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
+  .scrim.open{display:flex}
+  .sheet{background:var(--bg);border:1px solid var(--line);border-bottom:none;width:100%;max-width:440px;padding:24px 22px 30px;animation:up .3s ease}
+  @keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:translateY(0);opacity:1}}
+  .sheet .sh-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+  .sheet h3{font-size:24px}
+  .sheet .pg{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
+  .sheet .desc{font-size:13px;color:var(--ink-soft);margin:6px 0 16px}
+  .sheet .row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .sheet .row b{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink)}
+  .methods{display:flex;gap:8px;margin:16px 0 18px}
+  .method{flex:1;border:1px solid var(--line);background:var(--card);padding:11px 4px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);cursor:pointer;border-radius:3px}
+  .method.on{border-color:var(--accent);color:var(--accent)}
+  .sheet .cancel{width:100%;background:none;border:1px solid var(--line);color:var(--ink-soft);font-family:"Source Serif 4",serif;font-style:italic;font-size:13.5px;padding:11px;cursor:pointer;margin-top:10px}
+  .mandate{font-size:11.5px;font-style:italic;color:var(--ink-mute);margin-top:14px;line-height:1.5}
+
+  .stage{display:none}.stage.show{display:block}
+  .seal{width:54px;height:54px;border-radius:50%;border:1px solid var(--accent);display:grid;place-items:center;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:30px;color:var(--accent);margin:0 auto 20px}
+  .sec-link{display:inline-block;margin-top:18px;font-family:"Source Serif 4",serif;font-style:italic;font-size:14px;color:var(--ink-soft);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px;background:none;border:none;cursor:pointer}
+  .sec-link:hover{color:var(--ink)}
+  .loader{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <a href="flameback-app-broker-linking.html" class="back"><span class="a">&larr;</span> Back</a>
+    <div class="r">
+      <button class="toggle" id="toggle">light</button>
+      <a href="flameback-app-broker-linking.html" class="wm">flameback<span class="p">.</span></a>
+    </div>
+  </header>
+
+  <main class="body">
+    <div class="prog">
+      <span class="dot done"></span><span class="dot done"></span><span class="dot done"></span><span class="dot on"></span><span class="dot"></span>
+    </div>
+    <span class="step-lab">Activation · Step 4 of 5 — Fees</span>
+
+    <!-- fee + cadence -->
+    <section class="stage show" id="intro">
+      <span class="eyebrow"><span class="l"></span>Fees</span>
+      <h1 class="head">The <em>fees,</em> in full.</h1>
+      <p class="lede">Nothing hidden. A one-time onboarding fee you draw back down, and a flat advisory fee on what you invest.</p>
+
+      <div class="fee">
+        <div class="ttl"><span>One-time fee</span><span class="amt"><em>₹5,000</em></span></div>
+        <div class="cap">Fully offset against your advisory fees — a credit you draw down over your first few months.</div>
+      </div>
+
+      <div class="fee">
+        <div class="ttl"><span>Advisory fee</span><span class="amt">0.9% <span style="font-size:15px;color:var(--ink-soft)">/ yr</span></span></div>
+        <div class="cap">Charged on the value of your invested portfolio. Billed monthly, quarterly, or yearly — your choice.</div>
+      </div>
+
+      <span class="cad-lab">Billing cadence</span>
+      <div class="chips" id="chips">
+        <div class="chip on" data-cad="monthly"><div class="c-nm">Monthly</div><div class="c-amt">₹750 / mo</div></div>
+        <div class="chip" data-cad="quarterly"><div class="c-nm">Quarterly</div><div class="c-amt">₹2,250 / qtr</div></div>
+        <div class="chip" data-cad="yearly"><div class="c-nm">Yearly</div><div class="c-amt">₹9,000 / yr</div></div>
+      </div>
+      <p class="cad-note">On your ₹10,00,000 portfolio. Changeable later in account settings.</p>
+
+      <button class="cta" id="payBtn">Pay ₹5,000 &rarr;</button>
+      <span class="sim-lab">Payments · Cashfree · UPI / cards / netbanking</span>
+    </section>
+
+    <!-- paid -->
+    <section class="stage" id="paid" style="text-align:center;padding-top:30px">
+      <div class="seal">✓</div>
+      <h1 class="head">You're <em>set.</em></h1>
+      <p class="lede" style="margin-top:10px">Payment received. Let's deploy your strategy.</p>
+      <a href="flameback-app-deployment.html" class="cta">Deploy now &rarr;</a>
+      <span class="sim-lab" id="paidCad">Monthly advisory mandate · ₹750 / month</span>
+    </section>
+
+    <!-- failed -->
+    <section class="stage" id="failed" style="text-align:center;padding-top:30px">
+      <div class="seal" style="border-color:var(--accent);color:var(--accent)">↺</div>
+      <h1 class="head">Payment didn't <em>go through.</em></h1>
+      <p class="lede" style="margin-top:10px">The bank declined the transaction. Try again, or use a different method.</p>
+      <button class="cta" id="retryBtn">Try again &rarr;</button>
+      <button class="sec-link" id="diffMethod">Try a different method</button>
+    </section>
+
+  </main>
+</div>
+
+<!-- Cashfree payment sheet -->
+<div class="scrim" id="scrim">
+  <div class="sheet">
+    <div class="sh-h"><h3>Confirm payment</h3><span class="pg">Cashfree</span></div>
+    <p class="desc">Flameback Capital onboarding fee</p>
+    <div class="row"><span>Amount</span><b>₹5,000</b></div>
+    <div class="row"><span>Recurring mandate</span><b id="sheetCad">₹750 / month</b></div>
+    <div class="methods" id="methods">
+      <div class="method on" data-m="UPI">UPI</div>
+      <div class="method" data-m="Card">Card</div>
+      <div class="method" data-m="Netbanking">Netbank</div>
+    </div>
+    <button class="cta" id="confirmPay" style="margin:0"><span id="payLbl">Pay ₹5,000 securely</span></button>
+    <p class="mandate">Cashfree also sets up your recurring advisory-fee mandate on the cadence you chose. You approve it once — no surprises later.</p>
+    <button class="cancel" id="cancelPay">Not now</button>
+  </div>
+</div>
+
+<script>
+  var t=document.getElementById('toggle');
+  t.onclick=function(){var l=document.documentElement.classList.toggle('light');t.textContent=l?'dark':'light';};
+
+  var cad='monthly';
+  var cadText={monthly:'₹750 / month',quarterly:'₹2,250 / quarter',yearly:'₹9,000 / year'};
+  document.querySelectorAll('#chips .chip').forEach(function(c){
+    c.onclick=function(){
+      document.querySelectorAll('#chips .chip').forEach(function(x){x.classList.remove('on');});
+      c.classList.add('on');
+      cad=c.getAttribute('data-cad');
+    };
+  });
+
+  document.querySelectorAll('#methods .method').forEach(function(m){
+    m.onclick=function(){
+      document.querySelectorAll('#methods .method').forEach(function(x){x.classList.remove('on');});
+      m.classList.add('on');
+    };
+  });
+
+  var scrim=document.getElementById('scrim');
+  function show(id){
+    ['intro','paid','failed'].forEach(function(s){document.getElementById(s).classList.toggle('show',s===id);});
+    window.scrollTo(0,0);
+  }
+  document.getElementById('payBtn').onclick=function(){
+    document.getElementById('sheetCad').textContent=cadText[cad];
+    scrim.classList.add('open');
+  };
+  document.getElementById('retryBtn').onclick=function(){
+    document.getElementById('sheetCad').textContent=cadText[cad];
+    scrim.classList.add('open');
+  };
+  document.getElementById('diffMethod').onclick=function(){
+    document.getElementById('sheetCad').textContent=cadText[cad];
+    scrim.classList.add('open');
+  };
+  document.getElementById('cancelPay').onclick=function(){scrim.classList.remove('open');};
+  scrim.onclick=function(e){if(e.target===scrim)scrim.classList.remove('open');};
+
+  document.getElementById('confirmPay').onclick=function(){
+    var btn=this,lbl=document.getElementById('payLbl');
+    btn.disabled=true;lbl.innerHTML='<span class="loader" style="vertical-align:-2px"></span>';
+    setTimeout(function(){
+      scrim.classList.remove('open');
+      btn.disabled=false;lbl.textContent='Pay ₹5,000 securely';
+      // 1-in-4 simulated failure to show the error state path; deterministic for demo: succeed
+      document.getElementById('paidCad').textContent=cad.charAt(0).toUpperCase()+cad.slice(1)+' advisory mandate · '+cadText[cad];
+      show('paid');
+    },1100);
+  };
+</script>
+</body>
+</html>
